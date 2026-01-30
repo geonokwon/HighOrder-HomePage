@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: highorder-homepage
+    restart: unless-stopped
+    ports:
+      - "8011:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PORT=465
+      - MAIL_USER=genieone.kt@gmail.com
+      - MAIL_PASS=vtya amdr rmav btoh
+      - MAIL_TO=kt_genieone@naver.com
+      # 후기 시스템 환경변수
+      - DATABASE_PATH=/app/data/reviews.db
+      - IMAGES_PATH=/app/public/uploads/reviews
+      # 볼륨 마운트 확인용
+      - VOLUME_MOUNT_TEST=true
+    volumes:
+      # 데이터 영속성만 마운트 (소스 코드는 빌드된 파일 사용)
+      - ./src/chatbot/data:/app/src/chatbot/data
+      - ./public/uploads/cards:/app/public/uploads/cards
+      # 후기 시스템 데이터 영속성
+      - ./data:/app/data
+      - ./public/uploads/reviews:/app/public/uploads/reviews
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Next.js build
+.next/
+
+# dotenv
+.env*
+
+# GenieBot ephemeral
+src/services/genieBot/**/node_modules/
+src/services/genieBot/client/dist/
+
+# macOS
+.DS_Store 

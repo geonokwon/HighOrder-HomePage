@@ -1,0 +1,103 @@
+/* @import 규칙은 반드시 파일 최상단에 위치해야 함 */
+@import 'swiper/css';
+@import 'swiper/css/free-mode';
+
+/* 폰트 선언을 먼저 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-SemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-ExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard/Pretendard-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbar utility (scrollbar-hide) */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html {
+  font-family: 'Pretendard', sans-serif;
+}
+
+@keyframes slide-right {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-slide-right {
+  animation: slide-right 2s ease-out forwards;
+}
+
+/* BottomFixedButton 위치 보정 - Framer Motion이 transform을 처리하므로 제거 */
+
+/* 간단하고 효과적인 스크롤바 고정 */
+html, body {
+  scrollbar-gutter: stable;
+}
+
+/* Radix UI 스크롤 잠금 완전 무력화 */
+body[data-scroll-locked] {
+  overflow: auto !important;
+  padding-right: 0px !important;
+  margin-right: 0px !important;
+} 

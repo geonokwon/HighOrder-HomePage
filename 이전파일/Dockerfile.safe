@@ -1,0 +1,48 @@
+FROM node:20-alpine AS base
+
+FROM base AS deps
+WORKDIR /app
+RUN apk add --no-cache libc6-compat python3 make g++
+
+COPY package.json package-lock.json* ./
+
+# 중요: postinstall 스크립트 완전 무시
+RUN npm ci --ignore-scripts && \
+    npm cache clean --force && \
+    rm -rf /root/.npm
+
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# 빌드 (scripts 무시)
+RUN npm run build
+
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# 최소 패키지만 설치
+RUN apk add --no-cache dumb-init curl && \
+    addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs && \
+    mkdir -p /app/data /app/public/uploads && \
+    chown -R nextjs:nodejs /app
+
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# nextjs 유저로 실행 (중요!)
+USER nextjs
+
+EXPOSE 3000
+ENV HOSTNAME="0.0.0.0"
+
+# 직접 실행 (start.sh 없이)
+CMD ["dumb-init", "node", "server.js"]
