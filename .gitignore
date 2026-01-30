@@ -13,3 +13,7 @@ src/services/genieBot/client/dist/
 
 # macOS
 .DS_Store 
+
+data/
+public/
+이전파일/
